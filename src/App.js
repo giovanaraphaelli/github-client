@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -6,6 +6,21 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [username, setUsername] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [repos, setRepos] = useState([]);
+
+  useEffect(() => {
+    if (!username) return;
+    fetch(
+      `http://api.github.com/users/${username}/repos?type=public&sort=update&per_page=100`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const result = data.sort((a, b) =>
+          a.stargazers_count < b.stargazers_count ? 1 : -1
+        );
+        setRepos(result);
+      });
+  }, [username]);
 
   const handleSearch = async () => {
     setIsLoading(true);
@@ -49,7 +64,27 @@ function App() {
           </>
         )}
       </section>
-      <section className="repos">Repositórios</section>
+      <section className="repos">
+        {username ? (
+          <>
+            <h2>Repositórios de {username}:</h2>
+
+            {repos.length ? (
+              <ul>
+                {repos.map((repo) => (
+                  <li key={repo.id}>
+                    {repo.name} ({repo.stargazers_count})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              'Carregando..'
+            )}
+          </>
+        ) : (
+          <h2>Faça uma busca primeiro.</h2>
+        )}
+      </section>
     </main>
   );
 }
