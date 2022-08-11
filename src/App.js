@@ -11,13 +11,13 @@ function App() {
   useEffect(() => {
     if (!username) return;
     fetch(
-      `http://api.github.com/users/${username}/repos?type=public&sort=update&per_page=100`
+      `https://api.github.com/users/${username}/repos?type=public&sort=update&per_page=100`
     )
       .then((response) => response.json())
       .then((data) => {
-        const result = data.sort((a, b) =>
-          a.stargazers_count < b.stargazers_count ? 1 : -1
-        );
+        const result = data
+          .reverse()
+          .sort((a, b) => (a.stargazers_count < b.stargazers_count ? 1 : -1));
         setRepos(result);
       });
   }, [username]);
