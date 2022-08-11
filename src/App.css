@@ -1,0 +1,26 @@
+main {
+  display: flex;
+  justify-content: center;
+  gap: 0.5;
+  padding: 1rem;
+}
+
+section {
+  flex-grow: 1;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+img {
+  width: 50px;
+}

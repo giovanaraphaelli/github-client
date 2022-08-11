@@ -1,5 +1,57 @@
+import { useState } from 'react';
+import './App.css';
+
 function App() {
-  return <div>Hello Word</div>;
+  const [query, setQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [username, setUsername] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async () => {
+    setIsLoading(true);
+    await fetch(`https://api.github.com/search/users?q=${query}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchResults(data.items);
+      });
+    setIsLoading(false);
+  };
+  return (
+    <main>
+      <section className="search">
+        <input
+          type="search"
+          placeholder="Username"
+          value={query}
+          onChange={({ target }) => setQuery(target.value)}
+        />
+        <button onClick={handleSearch} disabled={isLoading}>
+          {isLoading ? 'Pesquisando..' : 'Pesquisar'}
+        </button>
+        {!!searchResults.length && (
+          <>
+            <h1>Resultado:</h1>
+            <ul>
+              {searchResults.map((user) => (
+                <li key={user.id}>
+                  <img src={user.avatar_url} alt={`Foto de ${user.login}`} />
+                  <p>{user.login}</p>
+                  {username === user.login ? (
+                    '✓'
+                  ) : (
+                    <button onClick={() => setUsername(user.login)}>
+                      Selecionar
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
+      <section className="repos">Repositórios</section>
+    </main>
+  );
 }
 
 export default App;
