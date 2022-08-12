@@ -32,60 +32,65 @@ function App() {
     setIsLoading(false);
   };
   return (
-    <main>
-      <section className="search">
-        <input
-          type="search"
-          placeholder="Username"
-          value={query}
-          onChange={({ target }) => setQuery(target.value)}
-        />
-        <button onClick={handleSearch} disabled={isLoading}>
-          {isLoading ? 'Pesquisando..' : 'Pesquisar'}
-        </button>
-        {!!searchResults.length && (
-          <>
-            <h1>Resultado:</h1>
-            <ul>
-              {searchResults.map((user) => (
-                <li key={user.id}>
-                  <img src={user.avatar_url} alt={`Foto de ${user.login}`} />
-                  <p>{user.login}</p>
-                  {username === user.login ? (
-                    '✓'
-                  ) : (
-                    <button onClick={() => setUsername(user.login)}>
-                      Selecionar
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </section>
-      <section className="repos">
-        {username ? (
-          <>
-            <h2>Repositórios de {username}:</h2>
-
-            {repos.length ? (
+    <>
+      <header>
+        <h1>Github Client</h1>
+      </header>
+      <main>
+        <section className="search">
+          <input
+            type="search"
+            placeholder="Digite o username"
+            value={query}
+            onChange={({ target }) => setQuery(target.value)}
+          />
+          <button onClick={handleSearch} disabled={isLoading}>
+            {isLoading ? 'Pesquisando..' : 'Pesquisar'}
+          </button>
+          {!!searchResults.length && (
+            <>
+              <h2>Resultado:</h2>
               <ul>
-                {repos.map((repo) => (
-                  <li key={repo.id}>
-                    {repo.name} ({repo.stargazers_count})
+                {searchResults.map((user) => (
+                  <li key={user.id}>
+                    <img src={user.avatar_url} alt={`Foto de ${user.login}`} />
+                    <p>{user.login}</p>
+                    {username === user.login ? (
+                      '✓'
+                    ) : (
+                      <button onClick={() => setUsername(user.login)}>
+                        Selecionar
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
-            ) : (
-              'Carregando..'
-            )}
-          </>
-        ) : (
-          <h2>Faça uma busca primeiro.</h2>
-        )}
-      </section>
-    </main>
+            </>
+          )}
+        </section>
+        <section className="repos">
+          {username ? (
+            <>
+              <h2>Repositórios de {username}:</h2>
+
+              {repos.length ? (
+                <ul>
+                  {repos.map((repo) => (
+                    <li key={repo.id}>
+                      {repo.name} ({repo.stargazers_count})
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                'Carregando..'
+              )}
+            </>
+          ) : (
+            <h2>Faça uma busca primeiro.</h2>
+          )}
+        </section>
+      </main>
+    </>
   );
 }
 
