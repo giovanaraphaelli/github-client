@@ -6,7 +6,7 @@
 
 ## 🎯 Objetivo
 
-Este projeto foi desenvolvido em React JS consumindo a API do Github, nela é possível pesquisar repositórios públicos de usuários do Github.
+Este projeto foi desenvolvido em React JS consumindo a API do Github, nele é possível pesquisar repositórios públicos de usuários do Github.
 
 ## 🚀 Como executar o projeto
 
